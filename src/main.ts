@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());
-
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Checkout API')
     .setDescription('API for payment processing')

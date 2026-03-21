@@ -10,4 +10,4 @@ import { Product } from '../product/product.entity';
   providers: [TransactionService],
   controllers: [TransactionController],
 })
-export class TransactionModule {}
+export class TransactionModule { }

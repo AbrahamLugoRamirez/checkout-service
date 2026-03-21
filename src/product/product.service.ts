@@ -22,14 +22,20 @@ export class ProductService {
         {
           name: 'iPhone 13',
           description: 'Smartphone Apple',
-          price: 3000,
+          price: 2100000,
           stock: 5,
         },
         {
           name: 'Samsung Galaxy S21',
           description: 'Smartphone Samsung',
-          price: 2500,
+          price: 2500000,
           stock: 8,
+        },
+        {
+          name: 'iPhone 17',
+          description: 'Smartphone Apple',
+          price: 5500000,
+          stock: 3,
         },
       ]);
     }
