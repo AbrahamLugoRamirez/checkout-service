@@ -40,33 +40,5 @@ export class TransactionController {
 
   }
 
-  @Post('/payments/create')
-  async createPayment(@Body() body) {
-    const { token, amount, email } = body;
 
-    const reference = `order_${Date.now()}`;
-
-    const response = await axios.post(
-      'https://api-sandbox.co.uat.wompi.dev/v1/transactions',
-      {
-        amount_in_cents: amount * 100,
-        currency: 'COP',
-        customer_email: email,
-        reference,
-        payment_method: {
-          type: 'CARD',
-          token: token,
-          installments: 1,
-        },
-      },
-      {
-        headers: {
-          Authorization:
-            'Bearer prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg',
-        },
-      }
-    );
-
-    return response.data;
-  }
 }

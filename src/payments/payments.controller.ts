@@ -7,11 +7,16 @@ export class PaymentsController {
 
     @Post('create')
     async createPayment(@Body() body) {
+        console.log("body", body)
         return this.paymentsService.createTransaction(body);
     }
 
     @Get(':id')
     async getTransaction(@Param('id') id: string) {
         return this.paymentsService.getTransaction(id);
+    }
+    @Get('acceptance-tokens')
+    async getTokens() {
+        return this.paymentsService.getAcceptanceTokens();
     }
 }
