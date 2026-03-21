@@ -8,7 +8,7 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private repo: Repository<Product>,
-  ) {}
+  ) { }
 
   async findAll() {
     return this.repo.find();
