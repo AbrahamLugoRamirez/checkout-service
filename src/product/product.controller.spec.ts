@@ -1,12 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductController } from './product.controller';
+import { ProductService } from './product.service';
 
 describe('ProductController', () => {
   let controller: ProductController;
 
+  const mockProductService = {
+    findAll: jest.fn(),
+    seed: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductController],
+      providers: [
+        {
+          provide: ProductService,
+          useValue: mockProductService,
+        },
+      ],
     }).compile();
 
     controller = module.get<ProductController>(ProductController);
