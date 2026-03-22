@@ -1,78 +1,128 @@
 # 🛒 Checkout Service
 
-API de pagos que simula un flujo real de e-commerce integrando **Wompi** para procesamiento de transacciones con tarjeta de crédito.
+A payment API that simulates a real e-commerce checkout flow integrating **Wompi** for credit card transaction processing.
 
 ---
 
-## 🚀 Descripción
+# 🚀 Getting Started
 
-Este proyecto implementa un flujo completo de pago:
+## 📦 Installation
 
-- Consulta de productos  
-- Ingreso de datos de tarjeta  
-- Creación de transacción  
-- Procesamiento de pago con Wompi  
-- Validación y actualización de estado  
-
-Diseñado con separación clara entre lógica de negocio y pasarela de pagos.
+```bash
+npm install
+```
 
 ---
 
-## 🧠 Arquitectura
+## ⚙️ Environment Variables
 
-Frontend (React) → Backend (NestJS) → Wompi  
-                             ↓  
-                     Base de datos  
+Create a `.env` file in the root of the backend:
+
+```env
+PORT=3000
+WOMPI_BASE_URL=https://api-sandbox.co.uat.wompi.dev/v1
+WOMPI_PUBLIC_KEY=your_public_key
+WOMPI_PRIVATE_KEY=your_private_key
+WOMPI_EVENTS_KEY=your_events_key
+WOMPI_INTEGRITY_KEY=your_integrity_key
+```
 
 ---
 
-## ⚙️ Tecnologías
+## 🔌 Environment Setup
 
-- Backend: NestJS, TypeORM, SQLite, Axios, Swagger  
-- Frontend: React, Redux  
-- Integración: Wompi  
+Environment variables are loaded using:
+
+```ts
+import * as dotenv from 'dotenv';
+dotenv.config();
+```
+
+---
+
+## ▶️ Run the Application
+
+```bash
+npm run start:dev
+```
+
+Production:
+
+```bash
+npm run build
+npm run start:prod
+```
 
 ---
 
 ## 🌐 Base URL
 
+```text
 http://localhost:3000
+```
 
 ---
 
-## 📚 Swagger
+## 📚 API Documentation (Swagger)
 
+```text
 http://localhost:3000/api
+```
 
 ---
 
-## 📦 Endpoints
+# 🧠 Architecture
 
-### 🛍️ Products
-- GET /products → Listar productos  
-- GET /products/seed → Datos de prueba  
-
-### 💳 Transactions
-- POST /transactions → Crear transacción  
-- PATCH /transactions/{id}/{status} → Actualizar estado  
-- GET /transactions/signature → Generar firma  
-
-### 💰 Payments
-- POST /payments/create → Procesar pago  
-- GET /payments/{id} → Consultar estado  
-- GET /payments/acceptance-tokens → Tokens Wompi  
+Frontend (React) → Backend (NestJS) →  Database (SQLite) → Wompi
 
 ---
 
-## 🔄 Flujo de pago
+# ⚙️ Technologies
 
-1. Obtener productos:
-GET /products  
+* Backend: NestJS, TypeORM, SQLite, Axios, Swagger
+* Frontend: React, Redux
+* Integration: Wompi
 
-2. Enviar datos de pago:
-POST /payments/create  
+---
 
-Body:
+# 📦 API Endpoints
+
+## 🛍️ Products
+
+* `GET /products` → List products
+* `GET /products/seed` → Seed test data
+
+## 💳 Transactions
+
+* `POST /transactions` → Create transaction
+* `PATCH /transactions/{id}/{status}` → Update status
+* `GET /transactions/signature` → Generate signature
+
+## 💰 Payments
+
+* `POST /payments/create` → Process payment
+* `GET /payments/{id}` → Check payment status
+* `GET /payments/acceptance-tokens` → Get Wompi tokens
+
+---
+
+# 🔄 Payment Flow
+
+1. Fetch products:
+
+```bash
+GET /products
+```
+
+2. Send payment data:
+
+```bash
+POST /payments/create
+```
+
+Example body:
+
+```json
 {
   "card": {
     "number": "4242424242424242",
@@ -85,48 +135,42 @@ Body:
   "email": "test@test.com",
   "productId": 1
 }
+```
 
-3. Backend procesa el pago con Wompi y crea transacción  
+3. Backend processes payment with Wompi
 
-4. Consultar estado del pago:
-GET /payments/{transactionId}  
+4. Check transaction status:
 
-5. Actualizar estado:
-- APPROVED → SUCCESS  
-- DECLINED → FAILED  
+```bash
+GET /payments/{transactionId}
+```
 
----
+5. Update status:
 
-## ✅ Estados
-
-- PENDING → En proceso  
-- APPROVED → Exitoso  
-- DECLINED → Rechazado  
-- FAILED → Error  
+* APPROVED → SUCCESS
+* DECLINED → FAILED
 
 ---
 
-## ⚙️ Instalación
+# ✅ Transaction States
 
-npm install
-
----
-
-## ▶️ Ejecución
-
-npm run start:dev
+* `PENDING` → Processing
+* `APPROVED` → Success
+* `DECLINED` → Rejected
+* `FAILED` → Error
 
 ---
 
-## 🧪 Base de datos
+# 🧪 Database
 
-- SQLite local  
-- Persistencia de productos y transacciones  
+* SQLite
+* Stores products and transactions
 
 ---
-## 🧪 Backend Test Coverage
 
-The backend is tested using **Jest**, covering controllers, services, and core business logic.
+# 🧪 Test Coverage
+
+The backend is tested using **Jest**, covering controllers, services, and business logic.
 
 ### 📊 Coverage Summary
 
@@ -136,83 +180,91 @@ Functions    : 89.2%
 Lines        : 92.2%
 ```
 
-> ✅ The project meets the required **80%+ coverage threshold** across key metrics.
+> ✅ Meets the required **80%+ coverage threshold**
 
 ---
 
-### 📁 High Coverage Modules
-
-| Module       | Statements | Functions | Lines |
-| ------------ | ---------- | --------- | ----- |
-| Payments     | 100%       | 100%      | 100%  |
-| Transactions | 100%       | 100%      | 100%  |
-| DTOs         | 100%       | 100%      | 100%  |
-| Entities     | 100%       | 100%      | 100%  |
-| Modules      | 100%       | 100%      | 100%  |
-
----
-
-### 🧠 Testing Strategy
-
-* Unit tests for controllers and services
-* Mocking external dependencies (APIs and database)
-* Coverage of main business flows (payment creation, transaction lookup)
-* Validation of data handling and service interactions
-
----
-
-### ▶️ Run tests
+### ▶️ Run Tests
 
 ```bash
 npm run test
 ```
 
-### 📈 Generate coverage report
+### 📈 Coverage Report
 
 ```bash
 npm run test:cov
 ```
 
-Detailed report available at:
+---
+
+# ☁️ Deployment
+
+The backend is deployed on **AWS EC2 (Free Tier)**.
+
+### 🌍 API URL
 
 ```text
-coverage/lcov-report/index.html
+http://<your-ec2-ip>:3000
 ```
 
 ---
 
+# ⚠️ Common Issues
 
-## ⚠️ Consideraciones
+### ❌ Invalid URL error
 
-- Uso de entorno sandbox de Wompi  
-- No usar tarjetas reales  
-- Validación básica en frontend  
+```text
+ERR_INVALID_URL: undefined/tokens/cards
+```
 
----
+#### ✅ Solution:
 
-## 🔥 Mejoras futuras
-
-- Webhooks (eliminar polling)  
-- Autenticación JWT  
-- Idempotencia en pagos  
-- Logs y auditoría  
-- Tests automatizados  
-- Docker  
+* Ensure `.env` exists
+* Verify `dotenv.config()` is executed
+* Restart the application
 
 ---
 
-## 👩‍💻 Autor
+# 🔐 Security Notes
+
+* Never expose private keys in frontend
+* Use sandbox credentials for testing
+* Rotate keys if exposed
+
+---
+
+# ⚠️ Considerations
+
+* Uses Wompi sandbox environment
+* Do not use real credit cards
+* Basic frontend validations
+
+---
+
+# 🔥 Future Improvements
+
+* Webhooks (replace polling)
+* JWT authentication
+* Idempotency for payments
+* Logging & monitoring
+* Docker support
+
+---
+
+# 👨‍💻 Author
 
 Abraham Lugo Ramirez
 
-Backend Developer | APIs | Integraciones de pago  
+Backend Developer | APIs | Payment Integrations
 
 ---
 
-## ⭐ Valor del proyecto
+# ⭐ Project Value
 
-- Integración real con pasarela de pagos  
-- Diseño de APIs REST  
-- Manejo de estados transaccionales  
-- Separación de responsabilidades  
-- Buenas prácticas con NestJS  
+* Real payment gateway integration
+* REST API design
+* Transaction state management
+* Clean architecture with NestJS
+
+---
