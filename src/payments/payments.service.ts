@@ -62,7 +62,6 @@ export class PaymentsService {
 
 
     } catch (error: any) {
-      console.error('WOMPI eER:', error);
       console.error('WOMPI ERROR:', error?.response?.data);
       throw new Error('Error creando transacción');
     }
@@ -128,7 +127,6 @@ export class PaymentsService {
 
       return response.data.data.id;
     } catch (error: any) {
-      console.error('ERROR TOKEN:', error);
       console.error(
         'TOKEN ERROR(createCardToken):',
         error?.response?.data 
