@@ -7,7 +7,6 @@ export class PaymentsController {
 
     @Post('create')
     async createPayment(@Body() body) {
-        console.log("body", body)
         return this.paymentsService.createTransaction(body);
     }
 
