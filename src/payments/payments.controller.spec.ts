@@ -14,40 +14,32 @@ describe('PaymentsController', () => {
     jest.clearAllMocks();
   });
 
-  // ✅ createPayment
+
   it('should create payment', async () => {
     const body = {
       amount: 1000,
       email: 'test@test.com',
     };
-
     serviceMock.createTransaction.mockResolvedValue({ id: 'tx_123' });
-
     const result = await controller.createPayment(body);
-
     expect(serviceMock.createTransaction).toHaveBeenCalledWith(body);
     expect(result).toEqual({ id: 'tx_123' });
   });
 
-  // ✅ getTransaction
+
   it('should get transaction by id', async () => {
     serviceMock.getTransaction.mockResolvedValue({ id: 'tx_123' });
-
     const result = await controller.getTransaction('tx_123');
-
     expect(serviceMock.getTransaction).toHaveBeenCalledWith('tx_123');
     expect(result).toEqual({ id: 'tx_123' });
   });
 
-  // ✅ getTokens
   it('should get acceptance tokens', async () => {
     serviceMock.getAcceptanceTokens.mockResolvedValue({
       acceptanceToken: 'acc',
       personalAuthToken: 'auth',
     });
-
     const result = await controller.getTokens();
-
     expect(serviceMock.getAcceptanceTokens).toHaveBeenCalled();
     expect(result).toEqual({
       acceptanceToken: 'acc',

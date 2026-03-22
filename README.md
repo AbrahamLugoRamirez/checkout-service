@@ -124,6 +124,63 @@ npm run start:dev
 - Persistencia de productos y transacciones  
 
 ---
+## 🧪 Backend Test Coverage
+
+The backend is tested using **Jest**, covering controllers, services, and core business logic.
+
+### 📊 Coverage Summary
+
+```text
+Statements   : 93.7%
+Functions    : 89.2%
+Lines        : 92.2%
+```
+
+> ✅ The project meets the required **80%+ coverage threshold** across key metrics.
+
+---
+
+### 📁 High Coverage Modules
+
+| Module       | Statements | Functions | Lines |
+| ------------ | ---------- | --------- | ----- |
+| Payments     | 100%       | 100%      | 100%  |
+| Transactions | 100%       | 100%      | 100%  |
+| DTOs         | 100%       | 100%      | 100%  |
+| Entities     | 100%       | 100%      | 100%  |
+| Modules      | 100%       | 100%      | 100%  |
+
+---
+
+### 🧠 Testing Strategy
+
+* Unit tests for controllers and services
+* Mocking external dependencies (APIs and database)
+* Coverage of main business flows (payment creation, transaction lookup)
+* Validation of data handling and service interactions
+
+---
+
+### ▶️ Run tests
+
+```bash
+npm run test
+```
+
+### 📈 Generate coverage report
+
+```bash
+npm run test:cov
+```
+
+Detailed report available at:
+
+```text
+coverage/lcov-report/index.html
+```
+
+---
+
 
 ## ⚠️ Consideraciones
 
