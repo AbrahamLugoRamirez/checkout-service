@@ -23,7 +23,7 @@ export class ProductService {
           name: 'iPhone 13',
           description: 'Smartphone Apple',
           price: 2100000,
-          stock: 5,
+          stock: 8,
         },
         {
           name: 'Samsung Galaxy S21',
@@ -35,7 +35,13 @@ export class ProductService {
           name: 'iPhone 17',
           description: 'Smartphone Apple',
           price: 5500000,
-          stock: 3,
+          stock: 12,
+        },
+        {
+          name: 'Huawei Pura 80 Ultra',
+          description: 'Smartphone Huawei',
+          price: 3500000,
+          stock: 12,
         },
       ]);
     }
