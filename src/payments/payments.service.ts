@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { TransactionService } from '../transaction/transaction.service'
 import * as crypto from 'crypto';
 
 @Injectable()
 export class PaymentsService {
-
+  constructor(private readonly transactionService: TransactionService) { }
   async createTransaction(data: {
     card: any;
     amount: number;
     email: string;
+    productId: number;
   }) {
     try {
       const reference = `order_${Date.now()}`;
@@ -48,8 +50,17 @@ export class PaymentsService {
         }
       );
 
-      return response.data;
+     const transaction_id = await this.transactionService.create({
+        productId: data.productId,
+        amount: data.amount,
+        customerEmail: data.email,
+      });
+
+      return { transaction_id, wompi_response: response.data };
+
+
     } catch (error: any) {
+      console.error('WOMPI ERROR 1:', error);
       console.error('WOMPI ERROR:', error?.response?.data);
       throw new Error('Error creando transacción');
     }
@@ -114,10 +125,12 @@ export class PaymentsService {
 
       return response.data.data.id;
     } catch (error: any) {
+      console.error('ERROR TOKEN:', error.response.data.error.messages);
       console.error(
-        'TOKEN ERROR:',
+        'TOKEN ERROR(createCardToken):',
         error?.response?.data || error.message
       );
+      
 
       throw new Error('Error creando token de tarjeta');
     }
