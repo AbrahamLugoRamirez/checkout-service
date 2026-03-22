@@ -20,14 +20,16 @@ export class PaymentsService {
       const { acceptanceToken, personalAuthToken } =
         await this.getAcceptanceTokens();
       const integrityKey =
-        'stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp';
+        `${process.env.WOMPI_INTEGRITY_KEY}`;
       const crypto = require('crypto');
       const signature = crypto
         .createHash('sha256')
         .update(`${reference}${amountInCents}${currency}${integrityKey}`)
         .digest('hex');
+
+
       const response = await axios.post(
-        'https://api-sandbox.co.uat.wompi.dev/v1/transactions',
+        `${process.env.WOMPI_BASE_URL}/transactions`,
         {
           amount_in_cents: amountInCents,
           currency,
@@ -45,12 +47,12 @@ export class PaymentsService {
         {
           headers: {
             Authorization:
-              'Bearer prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg',
+              `Bearer ${process.env.WOMPI_PRIVATE_KEY}`,
           },
         }
       );
 
-     const transaction_id = await this.transactionService.create({
+      const transaction_id = await this.transactionService.create({
         productId: data.productId,
         amount: data.amount,
         customerEmail: data.email,
@@ -67,11 +69,11 @@ export class PaymentsService {
 
   async getTransaction(id: string) {
     const response = await axios.get(
-      `https://api-sandbox.co.uat.wompi.dev/v1/transactions/${id}`,
+      `${process.env.WOMPI_BASE_URL}/transactions/${id}`,
       {
         headers: {
           Authorization:
-            'Bearer prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg',
+            `Bearer ${process.env.WOMPI_PRIVATE_KEY}`,
         },
       },
     );
@@ -81,8 +83,9 @@ export class PaymentsService {
 
   async getAcceptanceTokens() {
     try {
+
       const response = await axios.get(
-        'https://api-sandbox.co.uat.wompi.dev/v1/merchants/pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7'
+        `${process.env.WOMPI_BASE_URL}/merchants/${process.env.WOMPI_PUBLIC_KEY}`
       );
 
       const data = response.data.data;
@@ -111,12 +114,12 @@ export class PaymentsService {
   }) {
     try {
       const response = await axios.post(
-        'https://api-sandbox.co.uat.wompi.dev/v1/tokens/cards',
+        `${process.env.WOMPI_BASE_URL}/tokens/cards`,
         cardData,
         {
           headers: {
             Authorization:
-              'Bearer pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7',
+              `Bearer ${process.env.WOMPI_PUBLIC_KEY}`,
             'Content-Type': 'application/json',
           },
         }
@@ -124,12 +127,11 @@ export class PaymentsService {
 
       return response.data.data.id;
     } catch (error: any) {
-      console.error('ERROR TOKEN:', error.response.data.error.messages);
       console.error(
         'TOKEN ERROR(createCardToken):',
-        error?.response?.data || error.message
+        error?.response?.data 
       );
-      
+
 
       throw new Error('Error creando token de tarjeta');
     }

@@ -25,7 +25,7 @@ export class TransactionController {
   async getSignature(@Query('reference') reference: string, @Query('amount') amount: number) {
     const currency = 'COP';
     const expirationTime = new Date(Date.now() + 10 * 60 * 1000).toISOString();
-    const integrityKey = 'stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp';
+    const integrityKey = '${process.env.WOMPI_INTEGRITY_KEY}';
     const string = `${reference}${amount.toString()}${currency}${integrityKey}`;
     const encondedText = new TextEncoder().encode(string);
     const hashBuffer = await crypto.subtle.digest("SHA-256", encondedText);
