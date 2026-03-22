@@ -1,25 +1,32 @@
-# Checkout Service API
+# ⚙️ Payment Backend (NestJS + Wompi)
 
-## 📌 Description
-
-Backend service built with NestJS to manage products and process transactions with a simulated payment flow.
-
-This project implements a complete checkout flow including:
-
-* Product management
-* Transaction creation
-* Payment simulation (SUCCESS / FAILED)
-* Stock validation and update
+Backend service built with **NestJS** that handles payment processing using **Wompi API**.
 
 ---
 
-## 🚀 Technologies
+## 🚀 Features
+
+* 💳 Tokenization of credit cards
+* 💰 Transaction creation
+* 🔄 Transaction status polling
+* 🧾 Transaction management
+* 🔐 Secure handling of payment data
+
+---
+
+## 🏗️ Tech Stack
 
 * NestJS
-* TypeORM
-* SQLite
-* Jest
-* Swagger
+* Axios
+* Wompi API
+* TypeScript
+
+---
+
+## 📂 Modules
+
+* `payments` → Handles payment creation
+* `transaction` → Manages transaction status
 
 ---
 
@@ -27,70 +34,84 @@ This project implements a complete checkout flow including:
 
 ```bash
 npm install
-```
-
----
-
-## ▶️ Run project
-
-```bash
 npm run start:dev
 ```
 
 ---
 
-## 📡 API Documentation
+## 🔑 Environment Variables
 
-Swagger available at:
+Create a `.env` file:
 
-```
-http://localhost:3000/api
-```
-
----
-
-## 🧪 Run tests
-
-```bash
-npm run test
-npm run test:cov
+```env
+WOMPI_PUBLIC_KEY=your_public_key
+WOMPI_PRIVATE_KEY=your_private_key
+WOMPI_INTEGRITY_KEY=your_integrity_key
 ```
 
-### 📊 Coverage
+---
 
-* Statements: 86%
-* Lines: 83%
+## 🔌 API Endpoints
+
+### Create Payment
+
+```http
+POST /payments/create
+```
+
+**Body:**
+
+```json
+{
+  "card": {
+    "number": "4242424242424242",
+    "exp_month": "12",
+    "exp_year": "25",
+    "cvc": "123",
+    "card_holder": "John Doe"
+  },
+  "amount": 100000,
+  "email": "test@test.com"
+}
+```
 
 ---
 
-## 💳 Payment Flow
+### Get Transaction Status
 
-1. Create transaction → `PENDING`
-2. Simulate payment result:
-
-   * SUCCESS
-   * FAILED
-3. If SUCCESS:
-
-   * Update transaction status
-   * Reduce product stock
+```http
+GET /payments/:id
+```
 
 ---
 
-## 🔐 Validations
+### Update Transaction Status (internal)
 
-* DTOs implemented using `class-validator`
-* Automatic request validation enabled globally
-
----
-
-## ⚠️ Notes
-
-* Payment integration is simulated for testing purposes
-* The system is designed to be easily integrated with real payment gateways (e.g. Wompi)
+```http
+PATCH /transactions/:id/:status
+```
 
 ---
 
-## 👤 Author
+## 🔄 Payment Flow
+
+1. Receive card data
+2. Generate token with Wompi
+3. Create transaction
+4. Store transaction locally
+5. Return transaction ID
+6. Frontend polls status
+
+---
+
+## ⚠️ Important Notes
+
+* Card data is not persisted
+* Always use test cards
+* Follow PCI compliance practices
+
+---
+
+## 👩‍💻 Author
 
 Abraham Lugo Ramirez

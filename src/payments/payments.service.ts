@@ -60,7 +60,6 @@ export class PaymentsService {
 
 
     } catch (error: any) {
-      console.error('WOMPI ERROR 1:', error);
       console.error('WOMPI ERROR:', error?.response?.data);
       throw new Error('Error creando transacción');
     }
