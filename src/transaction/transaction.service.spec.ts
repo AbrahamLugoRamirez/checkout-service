@@ -37,7 +37,7 @@ describe('TransactionService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks(); // 👈 importante
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {

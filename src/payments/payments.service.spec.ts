@@ -17,22 +17,17 @@ describe('PaymentsService', () => {
 
 
   it('should create transaction successfully', async () => {
-    // mock createCardToken
     jest.spyOn(service, 'createCardToken').mockResolvedValue('token123');
 
-    // mock acceptance tokens
     jest.spyOn(service, 'getAcceptanceTokens').mockResolvedValue({
       acceptanceToken: 'acc_token',
       personalAuthToken: 'auth_token',
     });
 
-
     (axios.post as jest.Mock).mockResolvedValue({
       data: { data: { id: 'wompi_tx_123' } },
     });
-
     transactionServiceMock.create.mockResolvedValue('local_tx_123');
-
     const result = await service.createTransaction({
       card: {},
       amount: 1000,
@@ -52,9 +47,7 @@ describe('PaymentsService', () => {
       acceptanceToken: 'acc_token',
       personalAuthToken: 'auth_token',
     });
-
     (axios.post as jest.Mock).mockRejectedValue(new Error('fail'));
-
     await expect(
       service.createTransaction({
         card: {},
@@ -69,7 +62,6 @@ describe('PaymentsService', () => {
     (axios.get as jest.Mock).mockResolvedValue({
       data: { id: 'tx_123' },
     });
-
     const result = await service.getTransaction('tx_123');
 
     expect(result).toEqual({ id: 'tx_123' });
@@ -85,16 +77,13 @@ describe('PaymentsService', () => {
         },
       },
     });
-
     const result = await service.getAcceptanceTokens();
-
     expect(result.acceptanceToken).toBe('acc');
     expect(result.personalAuthToken).toBe('auth');
   });
 
   it('should throw error if acceptance tokens fail', async () => {
     (axios.get as jest.Mock).mockRejectedValue(new Error('fail'));
-
     await expect(service.getAcceptanceTokens()).rejects.toThrow(
       'Error obteniendo acceptance tokens',
     );
@@ -105,7 +94,6 @@ describe('PaymentsService', () => {
     (axios.post as jest.Mock).mockResolvedValue({
       data: { data: { id: 'token123' } },
     });
-
     const result = await service.createCardToken({
       number: '4242424242424242',
       exp_month: '12',
@@ -122,7 +110,6 @@ describe('PaymentsService', () => {
     (axios.post as jest.Mock).mockRejectedValue({
       response: { data: { error: { messages: [] } } },
     });
-
     await expect(
       service.createCardToken({
         number: '123',
