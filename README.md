@@ -1,117 +1,161 @@
-# ⚙️ Payment Backend (NestJS + Wompi)
+# 🛒 Checkout Service
 
-Backend service built with **NestJS** that handles payment processing using **Wompi API**.
-
----
-
-## 🚀 Features
-
-* 💳 Tokenization of credit cards
-* 💰 Transaction creation
-* 🔄 Transaction status polling
-* 🧾 Transaction management
-* 🔐 Secure handling of payment data
+API de pagos que simula un flujo real de e-commerce integrando **Wompi** para procesamiento de transacciones con tarjeta de crédito.
 
 ---
 
-## 🏗️ Tech Stack
+## 🚀 Descripción
 
-* NestJS
-* Axios
-* Wompi API
-* TypeScript
+Este proyecto implementa un flujo completo de pago:
 
----
+- Consulta de productos  
+- Ingreso de datos de tarjeta  
+- Creación de transacción  
+- Procesamiento de pago con Wompi  
+- Validación y actualización de estado  
 
-## 📂 Modules
-
-* `payments` → Handles payment creation
-* `transaction` → Manages transaction status
+Diseñado con separación clara entre lógica de negocio y pasarela de pagos.
 
 ---
 
-## ⚙️ Installation
+## 🧠 Arquitectura
 
-```bash
-npm install
-npm run start:dev
-```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file:
-
-```env
-WOMPI_PUBLIC_KEY=your_public_key
-WOMPI_PRIVATE_KEY=your_private_key
-WOMPI_INTEGRITY_KEY=your_integrity_key
-```
+Frontend (React) → Backend (NestJS) → Wompi  
+                             ↓  
+                     Base de datos  
 
 ---
 
-## 🔌 API Endpoints
+## ⚙️ Tecnologías
 
-### Create Payment
+- Backend: NestJS, TypeORM, SQLite, Axios, Swagger  
+- Frontend: React, Redux  
+- Integración: Wompi  
 
-```http
-POST /payments/create
-```
+---
 
-**Body:**
+## 🌐 Base URL
 
-```json
+http://localhost:3000
+
+---
+
+## 📚 Swagger
+
+http://localhost:3000/api
+
+---
+
+## 📦 Endpoints
+
+### 🛍️ Products
+- GET /products → Listar productos  
+- GET /products/seed → Datos de prueba  
+
+### 💳 Transactions
+- POST /transactions → Crear transacción  
+- PATCH /transactions/{id}/{status} → Actualizar estado  
+- GET /transactions/signature → Generar firma  
+
+### 💰 Payments
+- POST /payments/create → Procesar pago  
+- GET /payments/{id} → Consultar estado  
+- GET /payments/acceptance-tokens → Tokens Wompi  
+
+---
+
+## 🔄 Flujo de pago
+
+1. Obtener productos:
+GET /products  
+
+2. Enviar datos de pago:
+POST /payments/create  
+
+Body:
 {
   "card": {
     "number": "4242424242424242",
     "exp_month": "12",
-    "exp_year": "25",
+    "exp_year": "28",
     "cvc": "123",
-    "card_holder": "John Doe"
+    "card_holder": "Test User"
   },
-  "amount": 100000,
-  "email": "test@test.com"
+  "amount": 50000,
+  "email": "test@test.com",
+  "productId": 1
 }
-```
+
+3. Backend procesa el pago con Wompi y crea transacción  
+
+4. Consultar estado del pago:
+GET /payments/{transactionId}  
+
+5. Actualizar estado:
+- APPROVED → SUCCESS  
+- DECLINED → FAILED  
 
 ---
 
-### Get Transaction Status
+## ✅ Estados
 
-```http
-GET /payments/:id
-```
-
----
-
-### Update Transaction Status (internal)
-
-```http
-PATCH /transactions/:id/:status
-```
+- PENDING → En proceso  
+- APPROVED → Exitoso  
+- DECLINED → Rechazado  
+- FAILED → Error  
 
 ---
 
-## 🔄 Payment Flow
+## ⚙️ Instalación
 
-1. Receive card data
-2. Generate token with Wompi
-3. Create transaction
-4. Store transaction locally
-5. Return transaction ID
-6. Frontend polls status
+npm install
 
 ---
 
-## ⚠️ Important Notes
+## ▶️ Ejecución
 
-* Card data is not persisted
-* Always use test cards
-* Follow PCI compliance practices
+npm run start:dev
 
 ---
 
-## 👩‍💻 Author
+## 🧪 Base de datos
+
+- SQLite local  
+- Persistencia de productos y transacciones  
+
+---
+
+## ⚠️ Consideraciones
+
+- Uso de entorno sandbox de Wompi  
+- No usar tarjetas reales  
+- Validación básica en frontend  
+
+---
+
+## 🔥 Mejoras futuras
+
+- Webhooks (eliminar polling)  
+- Autenticación JWT  
+- Idempotencia en pagos  
+- Logs y auditoría  
+- Tests automatizados  
+- Docker  
+
+---
+
+## 👩‍💻 Autor
 
 Abraham Lugo Ramirez
+
+Backend Developer | APIs | Integraciones de pago  
+
+---
+
+## ⭐ Valor del proyecto
+
+- Integración real con pasarela de pagos  
+- Diseño de APIs REST  
+- Manejo de estados transaccionales  
+- Separación de responsabilidades  
+- Buenas prácticas con NestJS  
