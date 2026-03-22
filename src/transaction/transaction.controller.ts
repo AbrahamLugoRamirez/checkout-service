@@ -3,7 +3,7 @@ import { TransactionService } from './transaction.service';
 import { TransactionStatus } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import * as crypto from 'crypto';
-import axios from 'axios';
+
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly service: TransactionService) { }

@@ -39,10 +39,13 @@ export class TransactionService {
     });
 
     transaction = await this.repo.save(transaction);
+    console.log("transaction", transaction)
     return this.repo.save(transaction);
   }
 
   async updateStatus(id: number, status: TransactionStatus) {
+
+    console.log("Updating transaction", id, "to status", status);
     const transaction = await this.repo.findOneBy({ id });
     if (!transaction) {
       throw new Error('Transaction not found');
